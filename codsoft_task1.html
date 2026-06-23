@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome / Sign Up / Login — Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1120;
+    --surface:#121A2B;
+    --surface-2:#19233A;
+    --line:#243150;
+    --text:#E8ECF4;
+    --muted:#7A8699;
+    --teal:#5EE6D9;
+    --periwinkle:#7C8FFF;
+    --coral:#FF6B81;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    height:100%;
+    -webkit-font-smoothing:antialiased;
+  }
+  body{
+    min-height:100vh;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-start;
+    justify-content:center;
+    gap:40px;
+    padding:48px 24px;
+    background:
+      radial-gradient(circle at 15% 0%, rgba(124,143,255,0.10), transparent 45%),
+      radial-gradient(circle at 85% 100%, rgba(94,230,217,0.08), transparent 45%),
+      var(--bg);
+  }
+
+  .page-block{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+  }
+  .page-tag{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:13px;
+    font-weight:600;
+    color:var(--muted);
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+  }
+
+  .phone{
+    width:360px;
+    max-width:100%;
+    min-height:740px;
+    background:var(--surface);
+    border-radius:36px;
+    border:1px solid var(--line);
+    box-shadow:0 40px 80px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02) inset;
+    overflow:hidden;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .statusbar{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px 26px 0;
+    font-size:13px; font-weight:600; color:var(--text);
+    font-family:'Space Grotesk',sans-serif;
+  }
+
+  .body-pad{
+    flex:1;
+    padding:28px 26px 26px;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .spacer{ flex:1; }
+
+  /* ---------- WELCOME ---------- */
+  .brand-mark{
+    width:64px; height:64px;
+    border-radius:18px;
+    background:linear-gradient(135deg, var(--periwinkle), var(--teal));
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:20px;
+  }
+  .welcome-hero{
+    width:100%;
+    aspect-ratio:1.1;
+    border-radius:24px;
+    background:linear-gradient(160deg, var(--surface-2), #0E1730);
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:28px;
+    position:relative;
+    overflow:hidden;
+  }
+  .welcome-hero .orb{
+    position:absolute;
+    width:180px; height:180px;
+    border-radius:50%;
+    filter:blur(10px);
+    opacity:0.5;
+  }
+  .orb.o1{ background:var(--periwinkle); top:-40px; left:-40px; }
+  .orb.o2{ background:var(--teal); bottom:-50px; right:-30px; }
+
+  h1.headline{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:30px;
+    font-weight:600;
+    line-height:1.2;
+    letter-spacing:-0.01em;
+    margin-bottom:10px;
+  }
+  p.sub{
+    font-size:15px;
+    color:var(--muted);
+    line-height:1.5;
+    margin-bottom:28px;
+  }
+
+  .btn{
+    width:100%;
+    padding:16px;
+    border-radius:16px;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:15.5px;
+    border:none;
+    cursor:pointer;
+    transition:transform .15s, filter .15s;
+    text-align:center;
+    display:block;
+    text-decoration:none;
+  }
+  .btn:active{ transform:scale(0.98); }
+  .btn-primary{
+    background:linear-gradient(90deg, var(--periwinkle), var(--teal));
+    color:#0B1120;
+    margin-bottom:12px;
+  }
+  .btn-secondary{
+    background:var(--surface-2);
+    border:1.5px solid var(--line);
+    color:var(--text);
+    margin-bottom:12px;
+  }
+  .btn-ghost{
+    background:none;
+    border:none;
+    color:var(--periwinkle);
+    font-weight:600;
+    font-size:14px;
+    padding:8px;
+  }
+
+  .dots{
+    display:flex; gap:6px; justify-content:center; margin-bottom:24px;
+  }
+  .dots span{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--line);
+  }
+  .dots span.active{
+    width:18px;
+    background:var(--teal);
+    border-radius:99px;
+  }
+
+  .legal{
+    text-align:center;
+    font-size:11.5px;
+    color:#4D5872;
+    line-height:1.5;
+  }
+  .legal a{ color:var(--muted); }
+
+  .crosslink{
+    text-align:center;
+    font-size:14px;
+    color:var(--muted);
+    margin-top:4px;
+  }
+  .crosslink a{
+    color:var(--teal);
+    font-weight:700;
+    text-decoration:none;
+    cursor:pointer;
+  }
+
+  /* ---------- FORM SHARED ---------- */
+  .eyebrow{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:13px;
+    color:var(--teal);
+    font-weight:600;
+    letter-spacing:0.03em;
+    margin-bottom:10px;
+  }
+  h1.form-title{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:26px;
+    font-weight:600;
+    line-height:1.25;
+    margin-bottom:8px;
+    letter-spacing:-0.01em;
+  }
+  p.form-sub{
+    font-size:14.5px;
+    color:var(--muted);
+    line-height:1.5;
+    margin-bottom:26px;
+  }
+
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    color:var(--muted);
+    margin-bottom:8px;
+  }
+  .input-wrap{ position:relative; }
+  input[type="text"], input[type="email"], input[type="password"]{
+    width:100%;
+    background:var(--surface-2);
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    padding:14px 16px;
+    font-size:15.5px;
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    outline:none;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  input::placeholder{ color:#4D5872; }
+  input:focus{
+    border-color:var(--periwinkle);
+    box-shadow:0 0 0 4px rgba(124,143,255,0.15);
+  }
+  input.error{ border-color:var(--coral); box-shadow:0 0 0 4px rgba(255,107,129,0.12); }
+  input.success{ border-color:var(--teal); }
+
+  .toggle-eye{
+    position:absolute;
+    right:14px; top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    color:var(--muted);
+    background:none;
+    border:none;
+    display:flex;
+    padding:4px;
+  }
+  .toggle-eye:hover{ color:var(--text); }
+
+  .error-msg{
+    font-size:12.5px;
+    color:var(--coral);
+    margin-top:7px;
+    display:none;
+    align-items:center;
+    gap:6px;
+  }
+  .error-msg.show{ display:flex; }
+
+  .strength-row{ display:flex; gap:6px; margin-top:10px; }
+  .strength-seg{ height:4px; flex:1; border-radius:99px; background:var(--surface-2); overflow:hidden; }
+  .strength-seg i{
+    display:block; height:100%; width:0%;
+    background:linear-gradient(90deg, var(--periwinkle), var(--teal));
+    border-radius:99px;
+    transition:width .4s ease;
+  }
+  .strength-text{ font-size:12px; color:var(--muted); margin-top:8px; font-weight:600; }
+
+  .row-between{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:22px;
+  }
+  .check-wrap{
+    display:flex; align-items:center; gap:9px;
+    font-size:13.5px; color:var(--muted); cursor:pointer;
+  }
+  .checkbox{
+    width:18px; height:18px;
+    border-radius:6px;
+    border:1.5px solid var(--line);
+    background:var(--surface-2);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .checkbox.checked{
+    background:linear-gradient(135deg, var(--periwinkle), var(--teal));
+    border-color:transparent;
+  }
+  .forgot-link{
+    font-size:13.5px; color:var(--periwinkle); font-weight:600; cursor:pointer; text-decoration:none;
+  }
+
+  .divider{
+    display:flex; align-items:center; gap:12px;
+    margin:20px 0;
+    color:var(--muted);
+    font-size:12.5px;
+  }
+  .divider::before, .divider::after{ content:''; flex:1; height:1px; background:var(--line); }
+
+  .social-row{ display:flex; gap:10px; margin-bottom:6px; }
+  .social-btn{
+    flex:1;
+    padding:13px;
+    border-radius:14px;
+    background:var(--surface-2);
+    border:1.5px solid var(--line);
+    color:var(--text);
+    font-size:14px;
+    font-weight:600;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    cursor:pointer;
+  }
+
+  .secure-row{
+    display:flex; align-items:flex-start; gap:10px;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:13px;
+    margin-bottom:18px;
+  }
+  .secure-row svg{ flex-shrink:0; margin-top:1px; color:var(--teal); }
+  .secure-row p{ font-size:12px; color:var(--muted); line-height:1.45; }
+
+  .cta{
+    width:100%;
+    padding:16px;
+    border-radius:16px;
+    background:linear-gradient(90deg, var(--periwinkle), var(--teal));
+    color:#0B1120;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:15.5px;
+    border:none;
+    cursor:pointer;
+    margin-bottom:16px;
+    transition:transform .15s, opacity .15s, filter .15s;
+  }
+  .cta:active{ transform:scale(0.98); }
+  .cta:disabled{ opacity:0.4; cursor:not-allowed; filter:grayscale(0.4); }
+
+  .toast{
+    position:absolute;
+    top:18px; left:50%;
+    transform:translateX(-50%) translateY(-120%);
+    background:var(--surface-2);
+    border:1px solid var(--teal);
+    color:var(--text);
+    padding:10px 16px;
+    border-radius:12px;
+    font-size:13px;
+    font-weight:600;
+    display:flex; align-items:center; gap:8px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.4);
+    transition:transform .35s cubic-bezier(.2,.8,.2,1);
+    z-index:10;
+    white-space:nowrap;
+  }
+  .toast.show{ transform:translateX(-50%) translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+  }
+
+  @media (max-width: 800px){
+    body{ gap:28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1: WELCOME ================= -->
+<div class="page-block">
+  <span class="page-tag">01 · Welcome</span>
+  <div class="phone">
+    <div class="toast" id="toast1"></div>
+    <div class="statusbar">
+      <span>9:41</span>
+      <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><rect x="0" y="6" width="3" height="5" rx="0.5" fill="#E8ECF4"/><rect x="4.5" y="4" width="3" height="7" rx="0.5" fill="#E8ECF4"/><rect x="9" y="2" width="3" height="9" rx="0.5" fill="#E8ECF4"/><rect x="13.5" y="0" width="2.5" height="11" rx="0.5" fill="#E8ECF4"/></svg>
+    </div>
+    <div class="body-pad">
+      <div class="spacer"></div>
+
+      <div class="welcome-hero">
+        <div class="orb o1"></div>
+        <div class="orb o2"></div>
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" style="position:relative;z-index:1;">
+          <path d="M12 2L3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7l-9-5z" stroke="#5EE6D9" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M9 12l2 2 4-4" stroke="#7C8FFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <h1 class="headline">Welcome to Drift.</h1>
+      <p class="sub">Your day, organized without the noise. Set up an account in under a minute, or jump back in if you've been here before.</p>
+
+      <button class="btn btn-primary" onclick="goTo('page2')">Create an account</button>
+      <button class="btn btn-secondary" onclick="goTo('page3')">I already have an account</button>
+
+      <div class="dots">
+        <span class="active"></span><span></span><span></span>
+      </div>
+
+      <p class="legal">By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PAGE 2: SIGN UP ================= -->
+<div class="page-block">
+  <span class="page-tag">02 · Sign Up</span>
+  <div class="phone">
+    <div class="toast" id="toast2"></div>
+    <div class="statusbar">
+      <span>9:41</span>
+      <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><rect x="0" y="6" width="3" height="5" rx="0.5" fill="#E8ECF4"/><rect x="4.5" y="4" width="3" height="7" rx="0.5" fill="#E8ECF4"/><rect x="9" y="2" width="3" height="9" rx="0.5" fill="#E8ECF4"/><rect x="13.5" y="0" width="2.5" height="11" rx="0.5" fill="#E8ECF4"/></svg>
+    </div>
+    <div class="body-pad">
+      <button class="btn-ghost" style="align-self:flex-start; padding-left:0; margin-bottom:10px;" onclick="goTo('page1')">← Back</button>
+
+      <div class="eyebrow">Get started</div>
+      <h1 class="form-title">Create your account.</h1>
+      <p class="form-sub">Just the basics — you can add a photo and preferences later.</p>
+
+      <div class="social-row">
+        <button class="social-btn" onclick="showToast('toast2','Continuing with Google')">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#7C8FFF" d="M21.8 12.2c0-.7-.06-1.4-.18-2H12v3.9h5.5a4.7 4.7 0 01-2 3.1v2.6h3.3c1.9-1.8 3-4.4 3-7.6z"/><path fill="#5EE6D9" d="M12 22c2.6 0 4.8-.9 6.4-2.3l-3.3-2.6c-.9.6-2 1-3.1 1-2.4 0-4.4-1.6-5.1-3.8H3.4v2.7C5 19.9 8.2 22 12 22z"/><path fill="#E8ECF4" d="M6.9 14.3a6 6 0 010-3.8V7.8H3.4a9.9 9.9 0 000 8.5l3.5-2z"/><path fill="#7A8699" d="M12 6.4c1.4 0 2.7.5 3.7 1.4l2.9-2.8C16.8 3.4 14.6 2.5 12 2.5 8.2 2.5 5 4.6 3.4 7.8l3.5 2.7c.7-2.2 2.7-3.8 5.1-4.1z"/></svg>
+          Google
+        </button>
+        <button class="social-btn" onclick="showToast('toast2','Continuing with Apple')">
+          <svg width="15" height="16" viewBox="0 0 24 24" fill="#E8ECF4"><path d="M16.5 1.5c.1 1.1-.3 2.1-1 2.9-.7.8-1.8 1.4-2.9 1.3-.1-1 .4-2.1 1-2.8.7-.8 1.9-1.4 2.9-1.4zM20 17c-.5 1.1-.7 1.6-1.4 2.6-.9 1.4-2.2 3.1-3.8 3.1-1.4 0-1.8-.9-3.6-.9s-2.3.9-3.6.9c-1.6 0-2.8-1.5-3.7-2.9C1.6 16.9.9 12.2 2.8 9c1-1.7 2.6-2.7 4.1-2.7 1.4 0 2.3.9 3.5.9s2-1 3.6-1c1.4 0 2.9.7 3.9 2-3.4 1.9-2.9 6.7.1 7.8-.4.9-.6 1.3-1 1z"/></svg>
+          Apple
+        </button>
+      </div>
+      <div class="divider">or with email</div>
+
+      <div class="field">
+        <label for="su-name">First name</label>
+        <input type="text" id="su-name" placeholder="Aanya" oninput="validateSignup()">
+      </div>
+
+      <div class="field">
+        <label for="su-email">Email address</label>
+        <input type="email" id="su-email" placeholder="you@example.com" oninput="validateSignup()">
+        <div class="error-msg" id="su-email-error">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span>That email doesn't look quite right</span>
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom:8px;">
+        <label for="su-password">Password</label>
+        <div class="input-wrap">
+          <input type="password" id="su-password" placeholder="At least 8 characters" oninput="checkStrength()">
+          <button class="toggle-eye" type="button" onclick="toggleVis('su-password')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
+          </button>
+        </div>
+        <div class="strength-row">
+          <div class="strength-seg"><i id="seg1"></i></div>
+          <div class="strength-seg"><i id="seg2"></i></div>
+          <div class="strength-seg"><i id="seg3"></i></div>
+          <div class="strength-seg"><i id="seg4"></i></div>
+        </div>
+        <p class="strength-text" id="strengthText">Use 8+ characters with a number or symbol</p>
+      </div>
+
+      <div class="secure-row" style="margin-top:18px;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p>Your password is encrypted on-device before it ever reaches our servers.</p>
+      </div>
+
+      <button class="cta" id="su-cta" disabled onclick="showToast('toast2','Account created 🎉')">Create account</button>
+
+      <p class="crosslink">Already have an account? <a onclick="goTo('page3')">Log in</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PAGE 3: LOGIN ================= -->
+<div class="page-block">
+  <span class="page-tag">03 · Log In</span>
+  <div class="phone">
+    <div class="toast" id="toast3"></div>
+    <div class="statusbar">
+      <span>9:41</span>
+      <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><rect x="0" y="6" width="3" height="5" rx="0.5" fill="#E8ECF4"/><rect x="4.5" y="4" width="3" height="7" rx="0.5" fill="#E8ECF4"/><rect x="9" y="2" width="3" height="9" rx="0.5" fill="#E8ECF4"/><rect x="13.5" y="0" width="2.5" height="11" rx="0.5" fill="#E8ECF4"/></svg>
+    </div>
+    <div class="body-pad">
+      <button class="btn-ghost" style="align-self:flex-start; padding-left:0; margin-bottom:10px;" onclick="goTo('page1')">← Back</button>
+
+      <div class="eyebrow">Welcome back</div>
+      <h1 class="form-title">Log in to Drift.</h1>
+      <p class="form-sub">Good to see you again. Pick up right where you left off.</p>
+
+      <div class="field">
+        <label for="li-email">Email address</label>
+        <input type="email" id="li-email" placeholder="you@example.com" oninput="validateLogin()">
+      </div>
+
+      <div class="field" style="margin-bottom:10px;">
+        <label for="li-password">Password</label>
+        <div class="input-wrap">
+          <input type="password" id="li-password" placeholder="Enter your password" oninput="validateLogin()">
+          <button class="toggle-eye" type="button" onclick="toggleVis('li-password')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
+          </button>
+        </div>
+        <div class="error-msg" id="li-error">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span>Check your email and password and try again</span>
+        </div>
+      </div>
+
+      <div class="row-between">
+        <div class="check-wrap" onclick="toggleRemember(this)">
+          <div class="checkbox" id="rememberBox"></div>
+          Remember me
+        </div>
+        <a class="forgot-link" onclick="showToast('toast3','Reset link sent (demo)')">Forgot password?</a>
+      </div>
+
+      <button class="cta" id="li-cta" disabled onclick="attemptLogin()">Log in</button>
+
+      <div class="divider">or with email</div>
+      <div class="social-row" style="margin-bottom:18px;">
+        <button class="social-btn" onclick="showToast('toast3','Continuing with Google')">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#7C8FFF" d="M21.8 12.2c0-.7-.06-1.4-.18-2H12v3.9h5.5a4.7 4.7 0 01-2 3.1v2.6h3.3c1.9-1.8 3-4.4 3-7.6z"/><path fill="#5EE6D9" d="M12 22c2.6 0 4.8-.9 6.4-2.3l-3.3-2.6c-.9.6-2 1-3.1 1-2.4 0-4.4-1.6-5.1-3.8H3.4v2.7C5 19.9 8.2 22 12 22z"/><path fill="#E8ECF4" d="M6.9 14.3a6 6 0 010-3.8V7.8H3.4a9.9 9.9 0 000 8.5l3.5-2z"/><path fill="#7A8699" d="M12 6.4c1.4 0 2.7.5 3.7 1.4l2.9-2.8C16.8 3.4 14.6 2.5 12 2.5 8.2 2.5 5 4.6 3.4 7.8l3.5 2.7c.7-2.2 2.7-3.8 5.1-4.1z"/></svg>
+          Google
+        </button>
+        <button class="social-btn" onclick="showToast('toast3','Continuing with Apple')">
+          <svg width="15" height="16" viewBox="0 0 24 24" fill="#E8ECF4"><path d="M16.5 1.5c.1 1.1-.3 2.1-1 2.9-.7.8-1.8 1.4-2.9 1.3-.1-1 .4-2.1 1-2.8.7-.8 1.9-1.4 2.9-1.4zM20 17c-.5 1.1-.7 1.6-1.4 2.6-.9 1.4-2.2 3.1-3.8 3.1-1.4 0-1.8-.9-3.6-.9s-2.3.9-3.6.9c-1.6 0-2.8-1.5-3.7-2.9C1.6 16.9.9 12.2 2.8 9c1-1.7 2.6-2.7 4.1-2.7 1.4 0 2.3.9 3.5.9s2-1 3.6-1c1.4 0 2.9.7 3.9 2-3.4 1.9-2.9 6.7.1 7.8-.4.9-.6 1.3-1 1z"/></svg>
+          Apple
+        </button>
+      </div>
+
+      <div class="spacer"></div>
+      <p class="crosslink">New here? <a onclick="goTo('page2')">Create an account</a></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // cross-page nav: scrolls to + briefly highlights target page for clarity in this 3-up prototype
+  function goTo(id){
+    const map = { page1: 0, page2: 1, page3: 2 };
+    const blocks = document.querySelectorAll('.page-block');
+    blocks[map[id]].scrollIntoView({ behavior:'smooth', block:'center' });
+    blocks.forEach(b => b.style.outline = 'none');
+    blocks[map[id]].style.outline = '2px solid rgba(94,230,217,0.5)';
+    blocks[map[id]].style.borderRadius = '36px';
+    setTimeout(()=> blocks[map[id]].style.outline = 'none', 1200);
+  }
+
+  function toggleVis(id){
+    const input = document.getElementById(id);
+    input.type = input.type === 'password' ? 'text' : 'password';
+  }
+
+  function showToast(toastId, msg){
+    const t = document.getElementById(toastId);
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  // ---- Sign up validation ----
+  function validateSignup(){
+    const name = document.getElementById('su-name').value.trim();
+    const email = document.getElementById('su-email').value.trim();
+    const emailInput = document.getElementById('su-email');
+    const emailErr = document.getElementById('su-email-error');
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let emailOk = false;
+
+    if(email.length === 0){
+      emailInput.classList.remove('success','error');
+      emailErr.classList.remove('show');
+    } else if(re.test(email)){
+      emailInput.classList.add('success');
+      emailInput.classList.remove('error');
+      emailErr.classList.remove('show');
+      emailOk = true;
+    } else {
+      emailInput.classList.add('error');
+      emailInput.classList.remove('success');
+      emailErr.classList.add('show');
+    }
+    updateSignupCta(name.length > 0 && emailOk);
+  }
+
+  let passwordStrengthOk = false;
+  function checkStrength(){
+    const val = document.getElementById('su-password').value;
+    const text = document.getElementById('strengthText');
+    let score = 0;
+    if(val.length >= 8) score++;
+    if(/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
+    if(/[0-9]/.test(val)) score++;
+    if(/[^A-Za-z0-9]/.test(val)) score++;
+
+    for(let i=1;i<=4;i++){
+      document.getElementById('seg'+i).style.width = (i <= score) ? '100%' : '0%';
+    }
+    const labels = ['', 'Weak — add a number or symbol', 'Okay — try mixing case', 'Good — almost there', 'Strong password'];
+    text.textContent = val.length === 0 ? 'Use 8+ characters with a number or symbol' : labels[score];
+
+    passwordStrengthOk = val.length >= 8 && score >= 2;
+    validateSignup();
+  }
+
+  function updateSignupCta(fieldsOk){
+    document.getElementById('su-cta').disabled = !(fieldsOk && passwordStrengthOk);
+  }
+
+  // ---- Login ----
+  let rememberChecked = false;
+  function toggleRemember(el){
+    rememberChecked = !rememberChecked;
+    document.getElementById('rememberBox').classList.toggle('checked', rememberChecked);
+  }
+  function validateLogin(){
+    const email = document.getElementById('li-email').value.trim();
+    const pass = document.getElementById('li-password').value;
+    document.getElementById('li-cta').disabled = !(email.length > 3 && pass.length > 0);
+    document.getElementById('li-error').classList.remove('show');
+    document.getElementById('li-email').classList.remove('error');
+    document.getElementById('li-password').classList.remove('error');
+  }
+  function attemptLogin(){
+    // demo: simulate an error state to show the error-free recovery path
+    document.getElementById('li-error').classList.add('show');
+    document.getElementById('li-email').classList.add('error');
+    document.getElementById('li-password').classList.add('error');
+  }
+</script>
+
+</body>
+</html>
